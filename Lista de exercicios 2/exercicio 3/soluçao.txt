@@ -1,0 +1,7 @@
+Quando posicionamos objetos utilizando os padrões que usamos anteriormente, notamos que eles aparecem invertidos no eixo Y. 
+Isso ocorre porque a origem (X:0, Y:0) está no canto superior esquerdo da tela. Enquanto o eixo X ainda aumenta para a 
+direita, o eixo Y agora cresce para baixo.
+
+Com essa nova projeção, conseguimos um mapeamento direto das coordenadas das nossas primitivas com as coordenadas da tela. 
+Assim, é possível definir com maior precisão e facilidade a posição e o tamanho de cada objeto.
+
