@@ -4,10 +4,11 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                // Aqui você inclui os caminhos para os diretórios que contém os cabeçalhos das funções
                 "${workspaceFolder}/Dependencies/GLAD/include",
+                "${workspaceFolder}/Dependencies/stb_image",
                 "${workspaceFolder}/Dependencies/glfw-3.4.bin.WIN64/include",
-                "${workspaceFolder}/Dependencies/glm"
+                "${workspaceFolder}/Dependencies/glm",
+                "${workspaceFolder}"
             ],
             "defines": [
                 "_DEBUG",
@@ -18,6 +19,20 @@
             "cStandard": "c17",
             "cppStandard": "c++17",
             "intelliSenseMode": "gcc-x64"
+        },
+        {
+            "name": "test",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "cStandard": "c17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "windows-gcc-x64"
         }
     ],
     "version": 4
