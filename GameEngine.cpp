@@ -5,6 +5,11 @@ static bool keys[1024] = {false};
 static bool resized;
 static GLuint width, height;
 
+void GameEngine::initialize() 
+{
+
+}
+
 int GameEngine::loadTexture(string filePath, int &imgWidth, int &imgHeight)
 {
 	GLuint texID;
@@ -126,71 +131,71 @@ bool GameEngine::checkCollisionWithMargin(Sprite* one, Sprite* two, float margin
 void GameEngine::createBackground()
 {
 	int imgWidth, imgHeight;
-	GLuint shader = setupShader();
-	std::cout << "Shader ID: " << shader << std::endl;
+	GLuint backgroundShader = setupShader();
+	std::cout << "Shader ID: " << backgroundShader << std::endl;
 	Sprite *spr = new Sprite;
 
-	glUseProgram(shader);
-	glUniform1i(glGetUniformLocation(shader, "texBuffer"), 0);
-	glUniformMatrix4fv(glGetUniformLocation(shader, "projection"), 1, GL_FALSE, value_ptr(projection));
+	glUseProgram(backgroundShader);
+	glUniform1i(glGetUniformLocation(backgroundShader, "texBuffer"), 0);
+	glUniformMatrix4fv(glGetUniformLocation(backgroundShader, "projection"), 1, GL_FALSE, value_ptr(projection));
 
 	int texture = loadTexture("textures/background/game_background.png", imgWidth, imgHeight);
-	spr->setupSprite(texture, vec3(800.0, 300.0, 0.0), vec3(imgWidth / 2.4, imgHeight / 1.8, 1.0), 1, 1, shader);
+	spr->setupSprite(texture, vec3(800.0, 300.0, 0.0), vec3(imgWidth / 2.4, imgHeight / 1.8, 1.0), 1, 1, backgroundShader);
 	this->sprites.push_back(spr); //sprites[0]
 }
 
 void GameEngine::createCharacter()
 {
 	int imgWidth, imgHeight;
-	GLuint shader = setupShader();
-	std::cout << "Shader ID: " << shader << std::endl;
+	GLuint characterShader = setupShader();
+	std::cout << "Shader ID: " << characterShader << std::endl;
 	Sprite *spr = new Sprite;
 
-	glUseProgram(shader);
-	glUniform1i(glGetUniformLocation(shader, "texBuffer"), 0);
-	glUniformMatrix4fv(glGetUniformLocation(shader, "projection"), 1, GL_FALSE, value_ptr(projection));
+	glUseProgram(characterShader);
+	glUniform1i(glGetUniformLocation(characterShader, "texBuffer"), 0);
+	glUniformMatrix4fv(glGetUniformLocation(characterShader, "projection"), 1, GL_FALSE, value_ptr(projection));
 
 	int texture = loadTexture("textures/character/warewolf/Run.png", imgWidth, imgHeight);
-	spr->setupSprite(texture, vec3(800.0, 300.0, 0.0), vec3(imgWidth / 2.4, imgHeight / 1.8, 1.0), 1, 1, shader);
+	spr->setupSprite(texture, vec3(50.0, 127.0, 0.0), vec3(imgWidth / 9.0, imgHeight, 1.0), 9, 1, characterShader);
 	this->sprites.push_back(spr); //sprites[0]
 }
 
 void GameEngine::createBird()
 {
 	int imgWidth, imgHeight;
-	GLuint shader = setupShader();
-	std::cout << "Shader ID: " << shader << std::endl;
+	GLuint birdShader = setupShader();
+	std::cout << "Shader ID: " << birdShader << std::endl;
 	Sprite *spr = new Sprite;
 
-	glUseProgram(shader);
-	glUniform1i(glGetUniformLocation(shader, "texBuffer"), 0);
-	glUniformMatrix4fv(glGetUniformLocation(shader, "projection"), 1, GL_FALSE, value_ptr(projection));
+	glUseProgram(birdShader);
+	glUniform1i(glGetUniformLocation(birdShader, "texBuffer"), 0);
+	glUniformMatrix4fv(glGetUniformLocation(birdShader, "projection"), 1, GL_FALSE, value_ptr(projection));
 
 	int texture = loadTexture("textures/bird/fly.png", imgWidth, imgHeight);
-	spr->setupSprite(texture, vec3(800.0, 300.0, 0.0), vec3(imgWidth / 2.4, imgHeight / 1.8, 1.0), 1, 1, shader);
+	spr->setupSprite(texture, vec3(800.0, 100.0, 0.0), vec3(imgWidth / 6.0, imgHeight - 2.0, 1.0), 6, 1, birdShader);
 	this->sprites.push_back(spr); //sprites[0]
 }
 
 void GameEngine::createObstacle()
 {
 	int imgWidth, imgHeight;
-	GLuint shader = setupShader();
-	std::cout << "Shader ID: " << shader << std::endl;
+	GLuint obstacleShader = setupShader();
+	std::cout << "Shader ID: " << obstacleShader << std::endl;
 	Sprite *spr = new Sprite;
 
-	glUseProgram(shader);
-	glUniform1i(glGetUniformLocation(shader, "texBuffer"), 0);
-	glUniformMatrix4fv(glGetUniformLocation(shader, "projection"), 1, GL_FALSE, value_ptr(projection));
+	glUseProgram(obstacleShader);
+	glUniform1i(glGetUniformLocation(obstacleShader, "texBuffer"), 0);
+	glUniformMatrix4fv(glGetUniformLocation(obstacleShader, "projection"), 1, GL_FALSE, value_ptr(projection));
 
 	int texture = loadTexture("textures/obstacles/rock.png", imgWidth, imgHeight);
-	spr->setupSprite(texture, vec3(800.0, 300.0, 0.0), vec3(imgWidth / 2.4, imgHeight / 1.8, 1.0), 1, 1, shader);
+	spr->setupSprite(texture, vec3(900.0, 85.0, 0.0), vec3(imgWidth, imgHeight, 1.0), 1, 1, obstacleShader);
 	this->sprites.push_back(spr); //sprites[0]
 }
 
 void GameEngine::createAllObjects()
 {
 	createBackground();
-	createCharacter();
-	createBird();
 	createObstacle();
+	createBird();
+	createCharacter();
 };

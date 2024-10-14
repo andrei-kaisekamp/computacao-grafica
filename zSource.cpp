@@ -63,61 +63,6 @@ int main()
 	glfwGetFramebufferSize(window, &width, &height);
 	glViewport(0, 0, width, height);
 
-	// Compilando e buildando o programa de shader
-	GLuint backgroundShader = engine->setupShader();
-	GLuint characterShader  = engine->setupShader();
-	GLuint obstacleShader   = engine->setupShader();
-	GLuint birdShader       = engine->setupShader();
-
-	std::cout << "background: " << backgroundShader << std::endl;
-	std::cout << "character: " << characterShader << std::endl;
-	std::cout << "obstacle: " << obstacleShader << std::endl;
-	std::cout << "bird: " << birdShader << std::endl;
-
-	// Gerando um buffer simples, com a geometria de um triângulo
-	// Sprite do fundo da cena
-    Sprite *background = new Sprite;
-    Sprite *character = new Sprite;
-    Sprite *obstacle = new Sprite;
-    Sprite *bird = new Sprite;
-
-	int imgWidth, imgHeight, jumpImgWidth, jumpImgHeight;
-
-	// inicializa imagem de pulo
-	GLuint jumpTexID = engine->loadTexture("textures/character/warewolf/Jump.png", jumpImgWidth, jumpImgHeight);
-
-	//glUseProgram(engine->shader);
-
-	// Enviando a cor desejada (vec4) para o fragment shader
-	// Utilizamos a variáveis do tipo uniform em GLSL para armazenar esse tipo de info
-	// que não está nos buffers
-	glUseProgram(backgroundShader);
-	glUniform1i(glGetUniformLocation(backgroundShader, "texBuffer"), 0);
-
-	glUseProgram(characterShader);
-	glUniform1i(glGetUniformLocation(characterShader, "texBuffer"), 0);
-
-	glUseProgram(birdShader);
-	glUniform1i(glGetUniformLocation(birdShader, "texBuffer"), 0);
-
-	glUseProgram(obstacleShader);
-	glUniform1i(glGetUniformLocation(obstacleShader, "texBuffer"), 0);
-
-	// Matriz de projeção ortográfica
-	mat4 projection = ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
-
-	glUseProgram(backgroundShader);
-	glUniformMatrix4fv(glGetUniformLocation(backgroundShader, "projection"), 1, GL_FALSE, value_ptr(projection));
-
-	glUseProgram(characterShader);
-	glUniformMatrix4fv(glGetUniformLocation(characterShader, "projection"), 1, GL_FALSE, value_ptr(projection));
-
-	glUseProgram(birdShader);
-	glUniformMatrix4fv(glGetUniformLocation(birdShader, "projection"), 1, GL_FALSE, value_ptr(projection));
-
-	glUseProgram(obstacleShader);
-	glUniformMatrix4fv(glGetUniformLocation(obstacleShader, "projection"), 1, GL_FALSE, value_ptr(projection));
-
 	// Ativando o primeiro buffer de textura da OpenGL
 	glActiveTexture(GL_TEXTURE0);
 
@@ -129,36 +74,21 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_ALWAYS);
 
+	int imgWidth, imgHeight, jumpImgWidth, jumpImgHeight;
+
+	// inicializa imagem de pulo
+	GLuint jumpTexID = engine->loadTexture("textures/character/warewolf/Jump.png", jumpImgWidth, jumpImgHeight);
+	GLuint runTexID = engine->loadTexture("textures/character/warewolf/Run.png", imgWidth, imgHeight);
+
+	engine->createAllObjects();
+	objects = engine->sprites;
+
 	bool isJumping = false;
 	float jumpVelocity = 15.0f; // Velocidade inicial do pulo
 	float gravity = 0.98f;      // Gravidade
 	float groundLevel = 127.0f; // Nível do chão onde o personagem "fica de pé"
 
 	float lastFrameTime = glfwGetTime();
-
-	// Inicializando a sprite do background
-	glUseProgram(backgroundShader);
-	int texID = engine->loadTexture("textures/background/game_background.png", imgWidth, imgHeight);
-	background->setupSprite(texID, vec3(800.0, 300.0, 0.0), vec3(imgWidth / 2.4, imgHeight / 1.8, 1.0), 1, 1, backgroundShader);
-	objects.push_back(background); //objects[0]
-
-	// Inicializando a sprite do obstaculo
-	glUseProgram(obstacleShader);
-	texID = engine->loadTexture("textures/obstacles/rock.png", imgWidth, imgHeight);
-	obstacle->setupSprite(texID, vec3(900.0, 85.0, 0.0), vec3(imgWidth, imgHeight, 1.0), 1, 1, obstacleShader);
-	objects.push_back(obstacle); //objects[1]
-
-	// Inicializando a sprite do passaro
-	glUseProgram(birdShader);
-	texID = engine->loadTexture("textures/bird/fly.png", imgWidth, imgHeight);
-	bird->setupSprite(texID, vec3(800.0, 100.0, 0.0), vec3(imgWidth / 6.0, imgHeight - 2.0, 1.0), 6, 1, birdShader);
-	objects.push_back(bird); //objects[2]
-
-	// Inicializando a sprite do personagem
-	glUseProgram(characterShader);
-	texID = engine->loadTexture("textures/character/warewolf/Run.png", imgWidth, imgHeight);
-	character->setupSprite(texID, vec3(50.0, 127.0, 0.0), vec3(imgWidth / 9.0, imgHeight, 1.0), 9, 1, characterShader);
-	objects.push_back(character); //objects[3]
 
 	// Loop da aplicação - "game loop"
 	while (!glfwWindowShouldClose(window))
@@ -173,6 +103,7 @@ int main()
 		//char animation
 		vec2 charoffsetTex = vec2(0.0, 0.0);
 		vec2 birdoffsetTex = vec2(0.0, 0.0);
+
 		glUseProgram(objects[3]->shader);
 		glUniform2f(glGetUniformLocation(objects[3]->shader, "offsetTex"), charoffsetTex.s, charoffsetTex.t);
 		
@@ -217,7 +148,7 @@ int main()
         		isJumping = false;                  // Reseta o estado de pulo
         		jumpVelocity = 15.0f;               // Reseta a velocidade para o próximo pulo
 				glUseProgram(objects[3]->shader);
-				objects[3]->setupSprite(texID, objects[3]->position, vec3(imgWidth / 9.0, imgHeight, 1.0), 9, 1, objects[3]->shader);
+				objects[3]->setupSprite(runTexID, objects[3]->position, vec3(imgWidth / 9.0, imgHeight, 1.0), 9, 1, objects[3]->shader);
 				objects[3]->FPS = 12.0;
     		}
 		}
@@ -269,17 +200,13 @@ int main()
 
 		// Verifica se houve uma colisão entre character e obstacle
    		if (engine->checkCollisionWithMargin(objects[3], objects[1], -20.0)) {
-        	// Lógica a ser executada quando ocorre uma colisão
         	std::cout << "Colisão com pedra detectada!" << std::endl;
-
 			glfwTerminate();
 			return 0;
     	}
 
 		if (engine->checkCollisionWithMargin(objects[3], objects[2], -20.0)) {
-        	// Lógica a ser executada quando ocorre uma colisão
         	std::cout << "Colisão com pássaro detectada!" << std::endl;
-
 			glfwTerminate();
 			return 0;
     	}
