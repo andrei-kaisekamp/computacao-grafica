@@ -20,7 +20,7 @@ using namespace std;
 
 using namespace glm;
 
-struct Sprite
+struct SpriteStruct
 {
 	GLuint VAO;
 	GLuint texID;
@@ -48,8 +48,9 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
 // Protótipos das funções
 int setupShader();
 int loadTexture(string filePath, int &imgWidth, int &imgHeight);
-void drawSprite(Sprite spr, GLuint shaderID);
-bool checkCollisionWithMargin(Sprite &one, Sprite &two, float margin);
+void drawSprite(SpriteStruct spr, GLuint shaderID);
+
+bool checkCollisionWithMargin(SpriteStruct &one, SpriteStruct &two, float margin);
 
 // Dimensões da janela (pode ser alterado em tempo de execução)
 const GLuint WIDTH = 800, HEIGHT = 600;
@@ -105,13 +106,6 @@ int main()
 	// GLAD: carrega todos os ponteiros d funções da OpenGL
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		std::cout << "Failed to initialize GLAD" << std::endl;
-	
-
-	// Obtendo as informações de versão
-	const GLubyte *renderer = glGetString(GL_RENDERER); /* get renderer string */
-	const GLubyte *version = glGetString(GL_VERSION);	/* version as a string */
-	cout << "Renderer: " << renderer << endl;
-	cout << "OpenGL version supported " << version << endl;
 
 	// Definindo as dimensões da viewport com as mesmas dimensões da janela da aplicação
 	int width, height;
@@ -123,10 +117,10 @@ int main()
 
 	// Gerando um buffer simples, com a geometria de um triângulo
 	// Sprite do fundo da cena
-	Sprite background, character, obstacle, bird;
+	SpriteStruct background, character, obstacle, bird;
 	int imgWidth, imgHeight, jumpImgWidth, jumpImgHeight;
 
-	Sprite button;
+	SpriteStruct button;
 	int ButtontexID = loadTexture("textures/button/play.png", imgWidth, imgHeight);
 	button.setupSprite(ButtontexID, vec3(400.0, 300.0, 0.0), vec3(imgWidth, imgHeight, 1.0), 1, 1);
 	// Carregando uma textura (recebendo seu ID)
@@ -330,6 +324,7 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
 //  O código fonte do vertex e fragment shader está nos arrays vertexShaderSource e
 //  fragmentShader source no iniçio deste arquivo
 //  A função retorna o identificador do programa de shader
+
 int setupShader() {
 	// Vertex shader
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -381,7 +376,7 @@ int setupShader() {
 // Apenas atributo coordenada nos vértices
 // 1 VBO com as coordenadas, VAO com apenas 1 ponteiro para atributo
 // A função retorna o identificador do VAO
-void Sprite::setupSprite(int texID, vec3 position, vec3 dimensions, int nFrames, int nAnimations)
+void SpriteStruct::setupSprite(int texID, vec3 position, vec3 dimensions, int nFrames, int nAnimations)
 {
 	this->texID = texID;
 	this->dimensions = dimensions;
@@ -447,11 +442,11 @@ void Sprite::setupSprite(int texID, vec3 position, vec3 dimensions, int nFrames,
 	lastTime = 0.0;
 }
 
-vec3 Sprite::getPMin() {
+vec3 SpriteStruct::getPMin() {
 	return vec3(position.x - (dimensions.x / 2), position.y - (dimensions.y / 2), position.z);
 }
 
-vec3 Sprite::getPMax() {
+vec3 SpriteStruct::getPMax() {
     return vec3(position.x + (dimensions.x / 2), position.y + (dimensions.y / 2), position.z);
 }
 
@@ -495,7 +490,7 @@ int loadTexture(string filePath, int &imgWidth, int &imgHeight)
 	return texID;
 }
 
-void drawSprite(Sprite spr, GLuint shaderID)
+void drawSprite(SpriteStruct spr, GLuint shaderID)
 {
 	glBindVertexArray(spr.VAO); // Conectando ao buffer de geometria
 
@@ -519,7 +514,7 @@ void drawSprite(Sprite spr, GLuint shaderID)
 	glBindVertexArray(0); // Desconectando o buffer de geometria
 }
 
-bool checkCollisionWithMargin(Sprite &one, Sprite &two, float margin = 0.0f) {
+bool checkCollisionWithMargin(SpriteStruct &one, SpriteStruct &two, float margin = 0.0f) {
     // Obtenha os pontos mínimo e máximo com a margem
     vec3 oneMin = one.getPMin() - vec3(margin, margin, 0);
     vec3 oneMax = one.getPMax() + vec3(margin, margin, 0);
