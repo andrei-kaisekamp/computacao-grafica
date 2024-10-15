@@ -22,6 +22,6 @@ extern float globalGravity;
 extern float globalGroundLevel;
 
 extern float globalTolerance;
-
+extern bool gameShouldRun;
 GLFWwindow *window;
 #endif

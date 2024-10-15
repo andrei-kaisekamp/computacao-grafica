@@ -41,6 +41,7 @@ void GameEngine::initialize()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	createAllObjects();
+	std::cout << "INICIANDO JOGO!  Level: 0    Speed: " << globalGameSpeed << std::endl;
 }
 
 void GameEngine::run()
@@ -57,6 +58,9 @@ void GameEngine::run()
 
 		if(detectColisions())
 			return;
+
+		if(levelCompleted())
+			levelUp();
 
 		glfwSwapBuffers(window);
 	}
@@ -263,9 +267,27 @@ bool GameEngine::detectColisions()
    	if (checkCollisionWithMargin(this->sprites[3], this->sprites[1], globalTolerance) 
 		|| checkCollisionWithMargin(this->sprites[3], this->sprites[2], globalTolerance)) {
     	
-		std::cout << "Colisão detectada!" << std::endl;
+		std::cout << "GAME OVER! Colisão detectada!" << std::endl;
+		std::cout << "FINAL SCORE: " << globalPoints << " FINAL LEVEL: " << globalLevel << std::endl;
 		glfwTerminate();
 		return true;
     }
 	return false;
+}
+
+bool GameEngine::levelCompleted()
+{
+	int newLevel = globalPoints / 300;
+	if(newLevel > globalLevel) {
+		return true;
+	}
+	return false;
+}
+
+void GameEngine::levelUp()
+{
+	globalLevel += 1;
+	globalGameSpeed += 1;
+	std::cout << "LEVEL UP!         Level: " << globalLevel << std::endl;
+	std::cout << "SPEED UP!         Speed: " << globalGameSpeed << std::endl;
 };

@@ -6,13 +6,13 @@ void Bird::move()
 	float chardt = now - this->lastTime;
 
 	birdTime += chardt;
-	this->position.y = 300.0f + amplitude * sin(frequency * birdTime); // Ajuste 300.0f para a altura média desejada
+	this->position.y = 300.0f + amplitude * sin(frequency * birdTime);
 	
-	this->position.x -= globalGameSpeed; 
+	this->position.x -= globalGameSpeed + 0.5; 
 	if (this->position.x <= 0.0)
 		this->position.x = 900.0;
 
-	// Incremento circular (em loop) do índice do frame DO CHAR
+	// Incremento circular (em loop) do índice do frame
 	if (chardt >= 1.0 / this->FPS)
 	{
 		this->iFrame = (this->iFrame + 1) % this->nFrames;

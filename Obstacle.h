@@ -9,7 +9,7 @@ public:
     void move() override; // Método específico do Obstacle
 
 private:
-    vec3 spawnPoint = vec3(900.0, 85.0, 0.0);
+    vec3 spawnPoint = vec3(1000.0, 85.0, 0.0);
     void increasePoints();
     void resetPosition();
 };

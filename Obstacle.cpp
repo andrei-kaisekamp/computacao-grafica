@@ -3,9 +3,10 @@
 void Obstacle::move()
 {
     this->position.x -= globalGameSpeed; 
-	if (this->position.x <= 0.0)
+	if (this->position.x <= 0.0) {
 		resetPosition();
         increasePoints();
+    }
 }
 
 void Obstacle::resetPosition()
@@ -17,4 +18,5 @@ void Obstacle::increasePoints()
 {
     //A cada obstáculo desviado com sucesso, ganha 100 pontos:
     globalPoints += 100;
+    std::cout << "+100 points!" << std::endl;
 }
