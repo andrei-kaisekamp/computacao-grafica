@@ -35,11 +35,11 @@ class GameEngine
 		bool checkCollisionWithMargin(Sprite* one, Sprite* two, float margin);
         
 		vector <Sprite*> sprites;
-		GLFWwindow *window;
 
 		mat4 projection = ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
 		void createAllObjects();
 		void initialize();
+		void run();
 
 		float gameSpeed = 5.0;
 

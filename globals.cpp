@@ -1,4 +1,6 @@
 #include "globals.h"
+static bool keys[1024] = {false};
+const GLuint WIDTH = 800, HEIGHT = 600;
 
 float globalGameSpeed   = 5.0;
 int globalLevel         = 1;

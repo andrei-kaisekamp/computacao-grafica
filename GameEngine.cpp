@@ -6,7 +6,61 @@ static GLuint width, height;
 
 void GameEngine::initialize() 
 {
+	// Inicialização da GLFW
+	glfwInit();
 
+	// Criação da janela GLFW
+	window = glfwCreateWindow(WIDTH, HEIGHT, "TRABALHO GA", nullptr, nullptr);
+	glfwMakeContextCurrent(window);
+
+	// Fazendo o registro da função de callback para a janela GLFW
+	glfwSetKeyCallback(window, key_callback);
+
+	// GLAD: carrega todos os ponteiros d funções da OpenGL
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+		std::cout << "Failed to initialize GLAD" << std::endl;
+
+	// Definindo as dimensões da viewport com as mesmas dimensões da janela da aplicação
+	int width, height;
+	glfwGetFramebufferSize(window, &width, &height);
+	glViewport(0, 0, width, height);
+
+	// Ativando o primeiro buffer de textura da OpenGL
+	glActiveTexture(GL_TEXTURE0);
+
+	// Habilitar a transparência
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	// Habilitar o teste de profundidade
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_ALWAYS);
+
+	// Limpa o buffer de cor
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // cor de fundo
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	createAllObjects();
+}
+
+void GameEngine::run()
+{
+	while (!glfwWindowShouldClose(window))
+	{
+		glfwPollEvents();
+
+		for (int i = 0; i < sprites.size(); i++)
+		{
+			sprites[i]->move();
+			sprites[i]->draw();
+		}
+
+		if(detectColisions())
+			return;
+
+		glfwSwapBuffers(window);
+	}
+	glfwTerminate();
 }
 
 int GameEngine::loadTexture(string filePath, int &imgWidth, int &imgHeight)
