@@ -1,10 +1,17 @@
-# computacao-grafica
+# TRABALHO GA
 
-Repositório criado para a cadeira de Computação Gráfica - 2/2024:
-- Resolução de exercícios semanais;
-- Trabalhos práticos;
+Trabalho individual, feito por Andrei Kaisekamp.
 
-O arquivo a ser executado é sempre o MAIN.CPP no diretório root deste repositório. <br>
-Essa foi a única maneira de fazer as dependências serem importadas de forma correta. <br>
+Primeiro de tudo, é necessário alterar o caminho definido na linha 12 do arquivo <br>
+"globals.h". Não foi possível incluir a dependência de forma dinâmica, não funcionou.
 
-Sendo assim, é necessário mover o arquivo desejado até o local do MAIN para executar.
+Executar o arquivo "Source.cpp" através do próprio Visual Studio Code, <br>
+não é necessário fazer nenhuma instalação.
+
+O vídeo apresentação está disponível no youtube:
+
+Parte 1: https://youtu.be/fqzyS4n4CwQ
+Parte 2: https://youtu.be/D8C79IpeqDA
+
+(foi necessário separar em 2 partes pois o youtube não permite videos de mais de 15min)
+
