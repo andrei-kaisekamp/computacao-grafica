@@ -82,7 +82,6 @@ void Sprite::draw()
 	glUniformMatrix4fv(glGetUniformLocation(this->shader, "model"), 1, GL_FALSE, value_ptr(model));
 
 	// Chamada de desenho - drawcall
-	// Poligono Preenchido - GL_TRIANGLES
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 	glBindVertexArray(0); // Desconectando o buffer de geometria
