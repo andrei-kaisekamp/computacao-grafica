@@ -10,7 +10,8 @@ public:
 	~Sprite();
 
     void setupSprite(int texID, vec3 position, vec3 dimensions, int nFrames, int nAnimations, GLuint shader);
-	void draw();
+	virtual void draw();
+	virtual void move();
     vec3 getPMin(); // Retorna o ponto inferior esquerdo
     vec3 getPMax(); // Retorna o ponto superior direito
 

@@ -14,7 +14,7 @@ void Sprite::setupSprite(int texID, vec3 position, vec3 dimensions, int nFrames,
 	this->shader = shader;
 	iAnimation = 0;
 	iFrame = 0;
-	
+
 	glUseProgram(this->shader);
 
 	d.s = 1.0 / (float)nFrames;
@@ -86,4 +86,9 @@ void Sprite::draw()
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 	glBindVertexArray(0); // Desconectando o buffer de geometria
+}
+
+void Sprite::move()
+{
+	
 }

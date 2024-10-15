@@ -30,6 +30,7 @@ class GameEngine
         static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mode);
 
         int setupShader();
+		bool detectColisions();
         int loadTexture(string filePath, int &imgWidth, int &imgHeight);
 		bool checkCollisionWithMargin(Sprite* one, Sprite* two, float margin);
         
@@ -39,10 +40,15 @@ class GameEngine
 		mat4 projection = ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
 		void createAllObjects();
 		void initialize();
+
+		float gameSpeed = 5.0;
+
     private:
 
 		void createBackground();
 		void createCharacter();
 		void createObstacle();
 		void createBird();
+
+		
 };
